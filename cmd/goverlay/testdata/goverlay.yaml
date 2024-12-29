@@ -1,0 +1,8 @@
+from: ./testdata/from.go
+patch: ./testdata/patch/patch.go
+dist: ./testdata/dist.go
+replaces:
+  - kind: func
+    ident: A
+  - kind: struct
+    ident: b
