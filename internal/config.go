@@ -16,12 +16,13 @@ type Replace struct {
 //
 // goverlay.yaml
 //
-//	from: /path/to/original/original.go
-//	patch: ./new.go
-//	dist: ./goverlayed.go
-//	replaces:
-//	  - kind: func
-//	    ident: hello
+// layers:
+//   - from: /path/to/original/original.go
+//     patch: ./new.go
+//     dist: ./goverlayed.go
+//     replaces:
+//   - kind: func
+//     ident: hello
 //
 // -- ./new.go --
 // package original
@@ -52,9 +53,13 @@ type Replace struct {
 //	}
 //
 // // End of goverlay generated code
-type Config struct {
+type Layer struct {
 	From     string
 	Patch    string
 	Dist     string
 	Replaces []Replace
+}
+
+type Config struct {
+	Layers []Layer
 }
