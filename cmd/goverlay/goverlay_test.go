@@ -11,7 +11,7 @@ import (
 	"rsc.io/script/scripttest"
 )
 
-func goverlay() script.Cmd {
+func goverlayCmd() script.Cmd {
 	return script.Command(
 		script.CmdUsage{
 			Summary: "goverlay is a tool to generate overlayed code",
@@ -47,7 +47,7 @@ func goverlay() script.Cmd {
 	)
 }
 
-func generate() script.Cmd {
+func generateCmd() script.Cmd {
 	return script.Command(
 		script.CmdUsage{
 			Summary: "generate is a tool to generate overlay.json",
@@ -87,8 +87,8 @@ func generate() script.Cmd {
 func TestScript(t *testing.T) {
 	ctx := context.Background()
 	engine := script.NewEngine()
-	engine.Cmds["goverlay"] = goverlay()
-	engine.Cmds["generate"] = generate()
+	engine.Cmds["goverlay"] = goverlayCmd()
+	engine.Cmds["generate"] = generateCmd()
 	env := os.Environ()
 	scripttest.Test(t, ctx, engine, env, "testdata/*.txt")
 }

@@ -15,16 +15,18 @@ import (
 	"testing"
 
 	"github.com/goccy/go-yaml"
-	"github.com/sivchari/goverlay/internal"
 	"github.com/spf13/cobra"
 	"golang.org/x/tools/go/ast/astutil"
+
+	"github.com/sivchari/goverlay/cmd/goverlay/generate"
+	"github.com/sivchari/goverlay/internal"
 )
 
 var (
 	config string
 )
 
-var goverlayCmd = &cobra.Command{
+var cmd = &cobra.Command{
 	Use:   "goverlay",
 	Short: "goverlay is a tool to generate overlayed code",
 	Long: `goverlay is a tool to generate overlayed code
@@ -33,12 +35,12 @@ It takes a configuration file and generates a new file with the overlayed code`,
 }
 
 func init() {
-	goverlayCmd.PersistentFlags().StringVarP(&config, "config", "c", "goverlay.yaml", "Path to the configuration file")
+	cmd.PersistentFlags().StringVarP(&config, "config", "c", "goverlay.yaml", "Path to the configuration file")
 }
 
 func main() {
-	goverlayCmd.AddCommand(generateCmd)
-	if err := goverlayCmd.Execute(); err != nil {
+	cmd.AddCommand(generate.Cmd)
+	if err := cmd.Execute(); err != nil {
 		slog.Error("failed to generate overlayed code", "error", err)
 	}
 }
