@@ -1,4 +1,4 @@
-package main
+package generate
 
 import (
 	"fmt"
@@ -8,11 +8,12 @@ import (
 	"testing"
 
 	"github.com/goccy/go-yaml"
-	"github.com/sivchari/goverlay/internal"
 	"github.com/spf13/cobra"
+
+	"github.com/sivchari/goverlay/internal"
 )
 
-var generateCmd = &cobra.Command{
+var Cmd = &cobra.Command{
 	Use:   "generate",
 	Short: "generate is a tool to generate overlay.json",
 	Long:  "generate is a tool to generate overlay.json",
@@ -24,10 +25,11 @@ var (
 )
 
 func init() {
-	generateCmd.Flags().StringVarP(&dist, "dist", "d", "overlay.json", "Path to the overlay.json file")
+	Cmd.Flags().StringVarP(&dist, "dist", "d", "overlay.json", "Path to the overlay.json file")
 }
 
 func runGenerate(cmd *cobra.Command, args []string) error {
+	config := cmd.Flag("config").Value.String()
 	b, err := os.ReadFile(config)
 	if err != nil {
 		return err
