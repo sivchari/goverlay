@@ -33,10 +33,11 @@ It takes a configuration file and generates a new file with the overlayed code`,
 }
 
 func init() {
-	goverlayCmd.Flags().StringVarP(&config, "config", "c", "goverlay.yaml", "Path to the configuration file")
+	goverlayCmd.PersistentFlags().StringVarP(&config, "config", "c", "goverlay.yaml", "Path to the configuration file")
 }
 
 func main() {
+	goverlayCmd.AddCommand(generateCmd)
 	if err := goverlayCmd.Execute(); err != nil {
 		slog.Error("failed to generate overlayed code", "error", err)
 	}

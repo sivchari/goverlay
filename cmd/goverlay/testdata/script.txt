@@ -1,5 +1,8 @@
-cmd -c testdata/goverlay.yaml
+goverlay -c testdata/goverlay.yaml
 cmp stdout case1.txt
+
+generate -c testdata/goverlay2.yaml
+cmp stdout case2.txt
 
 -- case1.txt --
 package testdata
@@ -26,3 +29,10 @@ type b struct {
 	_ int
 }
 
+-- case2.txt --
+{
+  "Replaces": {
+    "./testdata/from.go": "./testdata/dist.go",
+    "./testdata/from2.go": "./testdata/dist2.go"
+  }
+}
