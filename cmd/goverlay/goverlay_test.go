@@ -11,7 +11,7 @@ import (
 	"rsc.io/script/scripttest"
 )
 
-func cmd() script.Cmd {
+func goverlay() script.Cmd {
 	return script.Command(
 		script.CmdUsage{
 			Summary: "goverlay is a tool to generate overlayed code",
@@ -47,10 +47,48 @@ func cmd() script.Cmd {
 	)
 }
 
+func generate() script.Cmd {
+	return script.Command(
+		script.CmdUsage{
+			Summary: "generate is a tool to generate overlay.json",
+		},
+		func(s *script.State, args ...string) (script.WaitFunc, error) {
+			return func(state *script.State) (string, string, error) {
+				r, w, err := os.Pipe()
+				if err != nil {
+					return "", "", err
+				}
+
+				// Redirect stdout to a pipe.
+				stdout := os.Stdout
+				os.Stdout = w
+
+				cmd := []string{"goverlay", "generate"}
+				cmdArgs := append(cmd, args...)
+				os.Args = cmdArgs
+				main()
+
+				// restore stdout
+				os.Stdout = stdout
+				w.Close()
+
+				// Read the output from the pipe.
+				var buf bytes.Buffer
+				io.Copy(&buf, r)
+
+				s.Logf("args: %s, stdout: %s\n", os.Args, buf.String())
+
+				return buf.String(), "", nil
+			}, nil
+		},
+	)
+}
+
 func TestScript(t *testing.T) {
 	ctx := context.Background()
 	engine := script.NewEngine()
-	engine.Cmds["cmd"] = cmd()
+	engine.Cmds["goverlay"] = goverlay()
+	engine.Cmds["generate"] = generate()
 	env := os.Environ()
 	scripttest.Test(t, ctx, engine, env, "testdata/*.txt")
 }

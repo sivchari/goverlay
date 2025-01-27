@@ -1,0 +1,8 @@
+layers:
+  - from: ./testdata/from.go
+    patch: ./testdata/patch/patch.go
+    dist: ./testdata/dist.go
+  - from: ./testdata/from2.go
+    patch: ./testdata/patch/patch2.go
+    dist: ./testdata/dist2.go
+
